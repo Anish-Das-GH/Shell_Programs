@@ -1,59 +1,35 @@
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<sys/types.h>
+#include<unistd.h>
 int main()
 {
-        pid_t p;
         int n;
-        p = fork();
+        pid_t p;
         char *msg;
-        int exit_code;
+        p = fork();
         if(p<0)
         {
-                printf("Process Failed");
-                exit(1);
+                printf("Error");
         }
         else if(p==0)
         {
-                msg="Child Process";
                 n=5;
-                exit_code=37;
-
+                msg="This is child process";
+                printf("Child process id :%d\n",getpid());
+                printf("Parent process id is%d\n",getppid());
         }
-        else{
-                msg="Parent Process";
+        else
+        {
                 n=3;
-                exit_code=0;
-        }
-                else{
-                msg="Parent Process";
-                n=3;
-                exit_code=0;
+                msg="this is parent process";
+                printf("Parent process is %d\n",getpid());
+                printf("grandfather process is %d\n",getppid());
+                printf("child process id is %d\n",p);
         }
         for(;n>0;n--)
         {
                 puts(msg);
                 sleep(1);
         }
-        if(p!=0)
-        {
-                int stat_val;
-                pid_t child_p;
-                child_p=wait(&stat_val);
-                printf("\nChild Finished with PID:%d",child_p);
-                if(WIFEXITED(stat_val))
-                {
-                        printf("\nChild exited with code %d\n",WEXITSTATUS(stat_val));
-                }
-                else
-                {
-                        printf("Child Terminated abnormally");
-                }
-
-        }
-        exit(exit_code);
 }
-       
-                           
